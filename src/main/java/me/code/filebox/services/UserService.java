@@ -24,7 +24,7 @@ public class UserService {
             return new RegistrationSuccess("User successfully registered with username: " + username);
 
         } catch (Exception e) {
-            throw new RegistrationFailureException("Registration failed " + e.getMessage());
+            throw new RegistrationFailureException("Registration failed, username: '" + username + "' already exists in database");
         }
     }
 }
