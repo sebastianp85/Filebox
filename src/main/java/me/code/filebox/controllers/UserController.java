@@ -1,5 +1,6 @@
 package me.code.filebox.controllers;
 
+import me.code.filebox.dtos.LoginSuccess;
 import me.code.filebox.dtos.RegistrationSuccess;
 import me.code.filebox.dtos.UserDto;
 import me.code.filebox.exceptions.RegistrationFailureException;
@@ -23,6 +24,12 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<RegistrationSuccess> registerUser(@RequestBody UserDto userDto) throws RegistrationFailureException {
         var result = userService.register(userDto.username(), userDto.password());
+        return ResponseEntity.ok().body(result);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginSuccess> login(@RequestBody UserDto userDto) {
+        var result = userService.login(userDto.username(), userDto.password());
         return ResponseEntity.ok().body(result);
     }
 }
