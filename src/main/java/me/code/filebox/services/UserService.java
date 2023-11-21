@@ -27,7 +27,7 @@ public class UserService {
     }
 
     public RegistrationSuccess register(String username, String password) throws RegistrationFailureException {
-        User newUser = new User (username, password);
+        User newUser = new User(username, password);
         try {
             userRepository.save(newUser);
             return new RegistrationSuccess("User successfully registered with username: " + username);
@@ -37,18 +37,18 @@ public class UserService {
         }
     }
 
-    public LoginSuccess login(String username, String password) throws InvalidAuthException{
+    public LoginSuccess login(String username, String password) throws InvalidAuthException {
         boolean isUserDetailsValid = userRepository.isValidUser(username, password);
 
-                if(isUserDetailsValid) {
-                    User user = findUserByUsername(username);
-                    String token = jwtTokenProvider.generateToken(user);
+        if (isUserDetailsValid) {
+            User user = findUserByUsername(username);
+            String token = jwtTokenProvider.generateToken(user);
 
-                    return new LoginSuccess("User successfully logged in ", token);
+            return new LoginSuccess("User successfully logged in ", token);
 
-                } else {
-                    throw new InvalidAuthException("Authorization failed, incorrect username or password");
-                }
+        } else {
+            throw new InvalidAuthException("Authorization failed, incorrect username or password");
+        }
     }
 
     private User findUserByUsername(String username) {

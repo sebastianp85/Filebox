@@ -3,7 +3,7 @@ package me.code.filebox.dtos;
 import lombok.Getter;
 
 @Getter
-public class LoginSuccess extends Success{
+public class LoginSuccess extends Success {
 
     private String token;
 
