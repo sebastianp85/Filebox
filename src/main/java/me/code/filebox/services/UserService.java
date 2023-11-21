@@ -1,5 +1,6 @@
 package me.code.filebox.services;
 
+import lombok.Getter;
 import me.code.filebox.dtos.LoginSuccess;
 import me.code.filebox.dtos.RegistrationSuccess;
 import me.code.filebox.exceptions.InvalidAuthException;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
+@Getter
 public class UserService {
 
     private final UserRepository userRepository;
@@ -21,7 +23,6 @@ public class UserService {
 
     @Autowired
     public UserService(UserRepository userRepository, JwtTokenProvider jwtTokenProvider) {
-
         this.userRepository = userRepository;
         this.jwtTokenProvider = jwtTokenProvider;
     }
@@ -51,7 +52,7 @@ public class UserService {
         }
     }
 
-    private User findUserByUsername(String username) {
+    protected User findUserByUsername(String username) {
         Optional<User> user = userRepository.findByUsername(username);
         return user.orElse(null);
     }
