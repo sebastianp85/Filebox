@@ -12,6 +12,10 @@ public interface FolderRepository extends JpaRepository<Folder, Integer> {
 
     @Query(value = "SELECT u FROM User u JOIN FETCH u.folders WHERE u.username = :username", nativeQuery = true)
     Optional<User> findUserWithFoldersByUsername(@Param("username") String username);
+
+    boolean existsByFolderNameAndUser(String folderName, User user);
+
+    Optional<Folder> findByFolderNameAndUser(String folderName, User user);
 /*
     @Query(value = "SELECT COUNT(f) > 0 FROM Folder f WHERE f.name = :name", nativeQuery = true)
     boolean isValidFolder(@Param("name") String name);

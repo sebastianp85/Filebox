@@ -1,4 +1,4 @@
-/*
+
 package me.code.filebox.exceptions;
 
 import org.springframework.http.HttpStatus;
@@ -10,7 +10,3 @@ public class InvalidFolderNameException extends Exception {
         super(message);
     }
 }
-
-
-
- */

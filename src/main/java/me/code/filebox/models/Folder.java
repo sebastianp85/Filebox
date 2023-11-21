@@ -17,7 +17,7 @@ public class Folder {
     private int id;
 
     @Column(nullable = false)
-    private String name;
+    private String folderName;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -25,7 +25,7 @@ public class Folder {
     private User user;
 
     public Folder(String name, User user) {
-        this.name = name;
+        this.folderName = name;
         this.user = user;
     }
 }

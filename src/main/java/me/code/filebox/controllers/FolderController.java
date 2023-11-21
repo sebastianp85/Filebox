@@ -1,7 +1,7 @@
 package me.code.filebox.controllers;
 
-import me.code.filebox.dtos.CreateFolderSuccess;
 import me.code.filebox.exceptions.InvalidAuthException;
+import me.code.filebox.exceptions.InvalidFolderNameException;
 import me.code.filebox.models.Folder;
 import me.code.filebox.security.JwtTokenProvider;
 import me.code.filebox.services.FolderService;
@@ -25,25 +25,17 @@ public class FolderController {
     }
 
     @PostMapping("/add-folder")
-    public ResponseEntity<CreateFolderSuccess> createFolder(
+    public ResponseEntity<Folder> createFolder(
             @RequestHeader("Authorization") String token,
             @RequestParam String folderName,
             @RequestParam String username)
-    throws InvalidAuthException {
+            throws InvalidAuthException, InvalidFolderNameException {
         boolean isValid = jwtTokenProvider.validate(token);
-        if(isValid) {
-            Folder newFolder = folderService.createFolder(folderName, username);
-            return new ResponseEntity<>(new CreateFolderSuccess("A new folder has been created with the name '" + folderName + "', and it is associated with the user '" + username + "'."), HttpStatus.CREATED);
+        if (isValid) {
+            Folder newFolder = folderService.createFolder(folderName, username, token);
+            return new ResponseEntity<>(newFolder, HttpStatus.CREATED);
         } else {
             throw new InvalidAuthException("Access denied");
         }
     }
-/*
-    @PostMapping("/login")
-    public ResponseEntity<LoginSuccess> login(@RequestBody UserDto userDto) {
-        var result = userService.login(userDto.username(), userDto.password());
-        return ResponseEntity.ok().body(result);
-    }
- */
-
 }
