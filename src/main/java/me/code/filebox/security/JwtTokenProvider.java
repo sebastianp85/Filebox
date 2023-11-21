@@ -26,4 +26,16 @@ public class JwtTokenProvider {
                 .signWith(key)
                 .compact();
     }
+
+    public boolean validate(String token) {
+        try {
+            Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

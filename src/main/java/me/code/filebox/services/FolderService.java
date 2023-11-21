@@ -22,4 +22,5 @@ public class FolderService {
         Folder newFolder = new Folder(folderName, user);
         return folderRepository.save(newFolder);
     }
+
 }
