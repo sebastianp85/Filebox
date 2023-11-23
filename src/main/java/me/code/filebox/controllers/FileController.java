@@ -13,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -35,12 +32,12 @@ public class FileController {
     }
 
 
-    @PostMapping("/upload-file")
+    @PostMapping("/{username}/upload-file")
     public ResponseEntity<UploadSuccess> uploadFile(
             @RequestHeader("Authorization") String token,
             @RequestParam("file") MultipartFile file,
             @RequestParam("folderName") String folderName,
-            @RequestParam("username") String username)
+            @PathVariable("username") String username)
             throws InvalidAuthException, InvalidFolderNameException, IOException {
         boolean isValid = jwtTokenProvider.validate(token);
 
