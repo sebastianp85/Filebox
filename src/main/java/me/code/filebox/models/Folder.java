@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.io.File;
 import java.util.List;
 
 @Entity
@@ -31,11 +30,8 @@ public class Folder {
     private List<FileEntity> files;
 
 
-
     public Folder(String name, User user) {
         this.folderName = name;
         this.user = user;
     }
-
-
 }

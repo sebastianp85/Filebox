@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Type;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -43,7 +42,6 @@ public class FileEntity {
         this.folder = folder;
         this.data = file.getBytes();
     }
-
 
     public Map<String, Object> toJson() {
         Map<String, Object> result = new LinkedHashMap<>();

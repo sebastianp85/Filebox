@@ -20,7 +20,6 @@ public class UserService {
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
-
     @Autowired
     public UserService(UserRepository userRepository, JwtTokenProvider jwtTokenProvider) {
         this.userRepository = userRepository;

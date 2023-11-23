@@ -7,17 +7,12 @@ import me.code.filebox.dtos.UploadSuccess;
 import me.code.filebox.exceptions.FileDoesNotExistException;
 import me.code.filebox.exceptions.InvalidAuthException;
 import me.code.filebox.exceptions.InvalidFolderNameException;
-import me.code.filebox.models.Folder;
 import me.code.filebox.security.JwtTokenProvider;
 import me.code.filebox.services.FileService;
-
 import org.springframework.beans.factory.annotation.Autowired;
-
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 
 import java.io.IOException;
 
@@ -58,10 +53,10 @@ public class FileController {
             throws InvalidAuthException, FileDoesNotExistException {
         boolean isValid = jwtTokenProvider.validate(token);
 
-        if(isValid) {
-            return ResponseEntity.ok(fileService.deleteFile(username,token,fileId));
+        if (isValid) {
+            return ResponseEntity.ok(fileService.deleteFile(username, token, fileId));
         } else {
-            throw  new InvalidAuthException("Access denied");
+            throw new InvalidAuthException("Access denied");
         }
     }
 }

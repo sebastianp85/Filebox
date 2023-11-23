@@ -1,6 +1,4 @@
-
 package me.code.filebox.services;
-
 
 import me.code.filebox.dtos.DeleteSuccess;
 import me.code.filebox.dtos.UploadSuccess;
@@ -35,16 +33,6 @@ public class FileService {
         this.fileRepository = fileRepository;
     }
 
-/*
-    public UploadSuccess uploadFile(String folderName, MultipartFile file,  int userId)
-            throws InvalidFolderNameException, InvalidAuthException, IOException {
-        try {
-            Folder folder = folderRepository.findByFolderNameAndUser(file, userId);
-        }
-
-
- */
-
     public UploadSuccess uploadFile(String folderName, String username, String token, MultipartFile file)
             throws InvalidFolderNameException, InvalidAuthException, IOException {
         String tokenUsername = jwtTokenProvider.getUsernameFromToken(token);
@@ -54,7 +42,6 @@ public class FileService {
             Folder folder = folderRepository.findByFolderNameAndUser(folderName, user)
                     .orElseThrow(() -> new InvalidFolderNameException("Folder not found"));
 
-            //byte[] fileContent = file.getBytes();
             FileEntity newFile = new FileEntity(file, folder);
             folder.getFiles().add(newFile);
             folderRepository.save(folder);
@@ -88,38 +75,3 @@ public class FileService {
         }
     }
 }
-
-
-
-
-
-
-
-
-/*
-public FileEntity uploadFile (String folderName, String username, String token, MultipartFile file)
-            throws InvalidFolderNameException, InvalidAuthException, IOException {
-            String tokenUsername = jwtTokenProvider.getUsernameFromToken(token);
-
-            if (tokenUsername != null && tokenUsername.equals(username)) {
-                User user = userService.findUserByUsername(username);
-                Folder folder = folderRepository.findByFolderNameAndUser(folderName, user)
-                        .orElseThrow(() -> new InvalidFolderNameException("Folder not found"));
-
-                //byte[] fileContent = file.getBytes();
-                FileEntity newFile = new FileEntity(file, folder);
-                folder.getFiles().add(newFile);
-                folderRepository.save(folder);
-
-                return newFile;
-            } else {
-                throw new InvalidAuthException("You are not authorized for that request");
-            }
-        }
-    }
- */
-
-
-/*
-
- */

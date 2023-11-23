@@ -42,8 +42,6 @@ public class JwtTokenProvider {
         return claims.get(type, returnType);
     }
 
-
-
     public boolean validate(String token) {
         try {
             Jwts.parserBuilder()
