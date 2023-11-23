@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.File;
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -24,8 +27,15 @@ public class Folder {
     @JsonIgnore
     private User user;
 
+    @OneToMany(mappedBy = "folder", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FileEntity> files;
+
+
+
     public Folder(String name, User user) {
         this.folderName = name;
         this.user = user;
     }
+
+
 }
