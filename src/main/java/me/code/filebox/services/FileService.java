@@ -12,6 +12,10 @@ import me.code.filebox.repositories.FileRepository;
 import me.code.filebox.repositories.FolderRepository;
 import me.code.filebox.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -66,6 +70,32 @@ public class FileService {
                     return new DeleteSuccess("File deleted successfully");
                 } else {
                     throw new InvalidAuthException("You are not authorized to delete this file");
+                }
+            } else {
+                throw new FileDoesNotExistException("File not found");
+            }
+        } else {
+            throw new InvalidAuthException("You are not authorized for that request");
+        }
+    }
+
+    public ResponseEntity<byte[]> downloadFile(String username, String token, int fileId)
+            throws InvalidAuthException, FileDoesNotExistException {
+        String tokenUsername = jwtTokenProvider.getUsernameFromToken(token);
+
+        if (tokenUsername != null && tokenUsername.equals(username)) {
+            Optional<FileEntity> fileOptional = fileRepository.findById(fileId);
+            if (fileOptional.isPresent()) {
+                FileEntity fileToDownload = fileOptional.get();
+
+                if (fileToDownload.getFolder().getUser().getUsername().equals(username)) {
+                    byte[] fileContent = fileToDownload.getData();
+                    HttpHeaders headers = new HttpHeaders();
+                    headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+                    headers.setContentDispositionFormData("attachment", fileToDownload.getFileName());
+                    return new ResponseEntity<>(fileContent, headers, HttpStatus.OK);
+                } else {
+                    throw new InvalidAuthException("You are not authorized to download this file");
                 }
             } else {
                 throw new FileDoesNotExistException("File not found");

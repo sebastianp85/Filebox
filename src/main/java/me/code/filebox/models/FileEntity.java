@@ -34,7 +34,6 @@ public class FileEntity {
 
     @ManyToOne
     @JoinColumn(name = "folder_id", nullable = false)
-    //@JsonIgnore
     private Folder folder;
 
     public FileEntity(MultipartFile file, Folder folder) throws IOException {
@@ -42,13 +41,15 @@ public class FileEntity {
         this.folder = folder;
         this.data = file.getBytes();
     }
+}
 
+/*
+TO DELETE
     public Map<String, Object> toJson() {
         Map<String, Object> result = new LinkedHashMap<>();
         result.put("image_id", this.id);
         result.put("filename", this.fileName);
         return result;
     }
-}
 
-
+ */

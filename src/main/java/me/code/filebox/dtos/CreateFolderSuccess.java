@@ -1,3 +1,4 @@
+/*
 package me.code.filebox.dtos;
 
 import lombok.Getter;
@@ -8,3 +9,4 @@ public class CreateFolderSuccess extends Success {
         super(message);
     }
 }
+*/

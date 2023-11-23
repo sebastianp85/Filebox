@@ -1,6 +1,4 @@
-
 package me.code.filebox.controllers;
-
 
 import me.code.filebox.dtos.DeleteSuccess;
 import me.code.filebox.dtos.UploadSuccess;
@@ -28,7 +26,6 @@ public class FileController {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
-
     @PostMapping("/{username}/upload-file")
     public ResponseEntity<UploadSuccess> uploadFile(
             @RequestHeader("Authorization") String token,
@@ -55,6 +52,21 @@ public class FileController {
 
         if (isValid) {
             return ResponseEntity.ok(fileService.deleteFile(username, token, fileId));
+        } else {
+            throw new InvalidAuthException("Access denied");
+        }
+    }
+
+    @GetMapping("/{username}/download")
+    public ResponseEntity<byte[]> downloadFile(
+            @RequestHeader("Authorization") String token,
+            @PathVariable("username") String username,
+            @RequestParam("file") int fileId)
+            throws InvalidAuthException, FileDoesNotExistException {
+        boolean isValid = jwtTokenProvider.validate(token);
+
+        if (isValid) {
+            return fileService.downloadFile(username, token, fileId);
         } else {
             throw new InvalidAuthException("Access denied");
         }

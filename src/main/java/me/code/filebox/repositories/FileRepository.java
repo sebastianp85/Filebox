@@ -11,8 +11,11 @@ import java.util.Optional;
 @Repository
 public interface FileRepository extends JpaRepository<FileEntity, Integer> {
 
-
     Optional<FileEntity> findById(int fileId);
+}
+
+/*
+TO DELETE
 
     // Hämta alla filer för en specifik mapp
     List<FileEntity> findByFolderId(int folderId);
@@ -20,5 +23,4 @@ public interface FileRepository extends JpaRepository<FileEntity, Integer> {
     // Hitta en fil med ett specifikt namn i en mapp
     Optional<FileEntity> findByFileNameAndFolderId(String fileName, int folderId);
 
-}
-
+ */
