@@ -32,7 +32,7 @@ public class FileEntity {
 
     @Transient
     private MultipartFile file;
-//PROVA OM MAN KAN TA BORT NÅGON AV MANYTOONE RELATIONERA PÅ NÅGON ENITET OM DET KAN KROCKA.
+
     @ManyToOne
     @JoinColumn(name = "folder_id", nullable = false)
     //@JsonIgnore

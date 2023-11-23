@@ -2,7 +2,9 @@
 package me.code.filebox.controllers;
 
 
+import me.code.filebox.dtos.DeleteSuccess;
 import me.code.filebox.dtos.UploadSuccess;
+import me.code.filebox.exceptions.FileDoesNotExistException;
 import me.code.filebox.exceptions.InvalidAuthException;
 import me.code.filebox.exceptions.InvalidFolderNameException;
 import me.code.filebox.models.Folder;
@@ -47,6 +49,20 @@ public class FileController {
             throw new InvalidAuthException("Access denied");
         }
     }
+
+    @DeleteMapping("/{username}/delete")
+    public ResponseEntity<DeleteSuccess> deleteFile(
+            @RequestHeader("Authorization") String token,
+            @PathVariable("username") String username,
+            @RequestParam("fileId") int fileId)
+            throws InvalidAuthException, FileDoesNotExistException {
+        boolean isValid = jwtTokenProvider.validate(token);
+
+        if(isValid) {
+            return ResponseEntity.ok(fileService.deleteFile(username,token,fileId));
+        } else {
+            throw  new InvalidAuthException("Access denied");
+        }
+    }
 }
 
-//String folderName, String username, String token, MultipartFile file
