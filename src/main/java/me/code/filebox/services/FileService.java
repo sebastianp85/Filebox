@@ -1,5 +1,6 @@
 package me.code.filebox.services;
 
+import jakarta.annotation.Resource;
 import me.code.filebox.dtos.DeleteSuccess;
 import me.code.filebox.dtos.UploadSuccess;
 import me.code.filebox.exceptions.FileDoesNotExistException;
@@ -12,6 +13,8 @@ import me.code.filebox.repositories.FileRepository;
 import me.code.filebox.repositories.FolderRepository;
 import me.code.filebox.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -90,9 +94,11 @@ public class FileService {
 
                 if (fileToDownload.getFolder().getUser().getUsername().equals(username)) {
                     byte[] fileContent = fileToDownload.getData();
+
                     HttpHeaders headers = new HttpHeaders();
                     headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-                    headers.setContentDispositionFormData("attachment", fileToDownload.getFileName());
+                    headers.setContentDispositionFormData("inline", fileToDownload.getFileName());
+
                     return new ResponseEntity<>(fileContent, headers, HttpStatus.OK);
                 } else {
                     throw new InvalidAuthException("You are not authorized to download this file");

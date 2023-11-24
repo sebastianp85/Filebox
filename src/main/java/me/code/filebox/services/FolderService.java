@@ -22,7 +22,8 @@ public class FolderService {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    public Folder createFolder(String folderName, String username, String token) throws InvalidFolderNameException, InvalidAuthException {
+    public Folder createFolder(String folderName, String username, String token)
+            throws InvalidFolderNameException, InvalidAuthException {
         String tokenUsername = jwtTokenProvider.getUsernameFromToken(token);
 
         if (tokenUsername != null && tokenUsername.equals((username))) {
