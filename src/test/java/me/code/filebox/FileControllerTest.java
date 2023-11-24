@@ -1,7 +1,9 @@
 package me.code.filebox;
 
 import me.code.filebox.controllers.FileController;
+import me.code.filebox.dtos.DeleteSuccess;
 import me.code.filebox.dtos.UploadSuccess;
+import me.code.filebox.exceptions.FileDoesNotExistException;
 import me.code.filebox.exceptions.InvalidAuthException;
 import me.code.filebox.exceptions.InvalidFolderNameException;
 import me.code.filebox.security.JwtTokenProvider;
@@ -51,5 +53,26 @@ public class FileControllerTest {
 
         // Kontrollera att metoden i FileService har anropats med rätt parametrar
         verify(fileService, times(1)).uploadFile("testfolder", "testuser", "testtoken", file);
+    }
+
+    @Test
+    public void testDeleteFile() throws InvalidAuthException, FileDoesNotExistException {
+        // Mocka JwtTokenProvider:s beteende
+        lenient().when(jwtTokenProvider.validate(anyString())).thenReturn(true);
+        lenient().when(jwtTokenProvider.getUsernameFromToken(anyString())).thenReturn("testuser");
+
+        // Mocka FileService:s beteende
+        when(fileService.deleteFile(anyString(), anyString(), anyInt()))
+                .thenReturn(new DeleteSuccess("File deleted successfully"));
+
+        // Kör testet
+        ResponseEntity<DeleteSuccess> responseEntity = fileController.deleteFile("testtoken", "testuser", 1);
+
+        // Kontrollera att anropet var framgångsrikt och returnerade rätt meddelande
+        assertEquals(200, responseEntity.getStatusCodeValue());
+        assertEquals("File deleted successfully", responseEntity.getBody().getMessage());
+
+        // Kontrollera att metoden i FileService har anropats med rätt parametrar
+        verify(fileService, times(1)).deleteFile("testuser", "testtoken", 1);
     }
 }
