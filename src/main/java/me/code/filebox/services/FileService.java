@@ -22,8 +22,12 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.Optional;
 
+/**
+ * Service class for managing file-related operations.
+ */
 @Service
 public class FileService {
+
     private final FolderRepository folderRepository;
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
@@ -40,6 +44,18 @@ public class FileService {
         this.folderService = folderService;
     }
 
+    /**
+     * Uploads a file to the specified folder for the given user.
+     *
+     * @param folderName The name of the folder to which the file will be uploaded.
+     * @param username   The username of the user performing the upload.
+     * @param token      The JWT token for authorization.
+     * @param file       The file to be uploaded.
+     * @return An UploadSuccess DTO indicating a successful upload.
+     * @throws InvalidFolderNameException If the folder name is invalid.
+     * @throws InvalidAuthException       If the authorization is invalid.
+     * @throws IOException                If an I/O error occurs during file processing.
+     */
     public UploadSuccess uploadFile(String folderName, String username, String token, MultipartFile file)
             throws InvalidFolderNameException, InvalidAuthException, IOException {
         validateAuthorization(username, token);
@@ -53,6 +69,16 @@ public class FileService {
         return new UploadSuccess("File uploaded successfully");
     }
 
+    /**
+     * Deletes a file with the specified ID for the given user.
+     *
+     * @param username The username of the user performing the deletion.
+     * @param token    The JWT token for authorization.
+     * @param fileId   The ID of the file to be deleted.
+     * @return A DeleteSuccess DTO indicating a successful deletion.
+     * @throws InvalidAuthException       If the authorization is invalid.
+     * @throws FileDoesNotExistException If the specified file does not exist.
+     */
     public DeleteSuccess deleteFile(String username, String token, int fileId)
             throws InvalidAuthException, FileDoesNotExistException {
         validateAuthorization(username, token);
@@ -61,6 +87,16 @@ public class FileService {
         return new DeleteSuccess("File deleted successfully");
     }
 
+    /**
+     * Downloads a file with the specified ID for the given user.
+     *
+     * @param username The username of the user performing the download.
+     * @param token    The JWT token for authorization.
+     * @param fileId   The ID of the file to be downloaded.
+     * @return A ResponseEntity containing the file content for download.
+     * @throws InvalidAuthException       If the authorization is invalid.
+     * @throws FileDoesNotExistException If the specified file does not exist.
+     */
     public ResponseEntity<byte[]> downloadFile(String username, String token, int fileId)
             throws InvalidAuthException, FileDoesNotExistException {
         validateAuthorization(username, token);
@@ -75,6 +111,13 @@ public class FileService {
         return new ResponseEntity<>(fileContent, headers, HttpStatus.OK);
     }
 
+    /**
+     * Validates the authorization of a user based on the provided username and JWT token.
+     *
+     * @param username The username of the user.
+     * @param token    The JWT token for authorization.
+     * @throws InvalidAuthException If the authorization is invalid.
+     */
     protected void validateAuthorization(String username, String token) throws InvalidAuthException {
         String tokenUsername = jwtTokenProvider.getUsernameFromToken(token);
 
@@ -83,6 +126,15 @@ public class FileService {
         }
     }
 
+    /**
+     * Retrieves a FileEntity by its ID for the given user.
+     *
+     * @param fileId   The ID of the file to retrieve.
+     * @param username The username of the user.
+     * @return The FileEntity if found.
+     * @throws FileDoesNotExistException If the specified file does not exist.
+     * @throws InvalidAuthException       If the authorization is invalid.
+     */
     private FileEntity getFilById(int fileId, String username) throws FileDoesNotExistException {
         Optional<FileEntity> fileOptional = fileRepository.findById(fileId);
 

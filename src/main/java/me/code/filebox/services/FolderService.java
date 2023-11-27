@@ -9,8 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service class for managing folder-related operations.
+ */
 @Service
 public class FolderService {
+
     private final FolderRepository folderRepository;
     private final UserService userService;
 
@@ -24,7 +28,16 @@ public class FolderService {
         this.userService = userService;
     }
 
-
+    /**
+     * Creates a new folder with the specified name for the given user.
+     *
+     * @param folderName The name of the folder to be created.
+     * @param username   The username of the user creating the folder.
+     * @param token      The JWT token for authorization.
+     * @return The created folder.
+     * @throws InvalidFolderNameException If the folder name is invalid or already exists.
+     * @throws InvalidAuthException       If the authorization is invalid.
+     */
     public Folder createFolder(String folderName, String username, String token)
             throws InvalidFolderNameException, InvalidAuthException {
         fileService.validateAuthorization(username, token);
@@ -38,9 +51,16 @@ public class FolderService {
         return folderRepository.save(newFolder);
     }
 
+    /**
+     * Retrieves a folder with the specified name for the given user.
+     *
+     * @param folderName The name of the folder to retrieve.
+     * @param user       The user associated with the folder.
+     * @return The retrieved folder.
+     * @throws InvalidFolderNameException If the folder name is invalid or the folder does not exist.
+     */
     protected Folder getFolder(String folderName, User user) throws InvalidFolderNameException {
         return folderRepository.findByFolderNameAndUser(folderName, user)
                 .orElseThrow(() -> new InvalidFolderNameException("Folder not found"));
     }
 }
-
