@@ -1,4 +1,3 @@
-
 package me.code.filebox.models;
 
 import jakarta.persistence.*;
@@ -8,8 +7,6 @@ import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 @Entity
 @Getter
@@ -43,13 +40,3 @@ public class FileEntity {
     }
 }
 
-/*
-TO DELETE
-    public Map<String, Object> toJson() {
-        Map<String, Object> result = new LinkedHashMap<>();
-        result.put("image_id", this.id);
-        result.put("filename", this.fileName);
-        return result;
-    }
-
- */

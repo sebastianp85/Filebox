@@ -29,19 +29,6 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public int getTokenId(String token) {
-        return getTokenClaim(token, "id", Integer.class);
-    }
-
-    public <T> T getTokenClaim(String token, String type, Class<T> returnType) {
-        Claims claims = Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-        return claims.get(type, returnType);
-    }
-
     public boolean validate(String token) {
         try {
             Jwts.parserBuilder()

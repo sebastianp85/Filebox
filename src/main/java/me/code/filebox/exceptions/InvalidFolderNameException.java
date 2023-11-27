@@ -1,4 +1,3 @@
-
 package me.code.filebox.exceptions;
 
 import org.springframework.http.HttpStatus;
