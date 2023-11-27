@@ -39,5 +39,10 @@ public class FolderService {
             throw new InvalidAuthException("You are not authorized for that request");
         }
     }
+
+    protected Folder getFolder(String folderName, User user) throws InvalidFolderNameException {
+        return folderRepository.findByFolderNameAndUser(folderName, user)
+                .orElseThrow(() -> new InvalidFolderNameException("Folder not found"));
+    }
 }
 

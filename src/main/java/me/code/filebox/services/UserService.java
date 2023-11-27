@@ -51,7 +51,7 @@ public class UserService {
         }
     }
 
-    protected User findUserByUsername(String username) {
+    public User findUserByUsername(String username) {
         Optional<User> user = userRepository.findByUsername(username);
         return user.orElse(null);
     }

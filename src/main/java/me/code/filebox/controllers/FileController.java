@@ -5,7 +5,6 @@ import me.code.filebox.dtos.UploadSuccess;
 import me.code.filebox.exceptions.FileDoesNotExistException;
 import me.code.filebox.exceptions.InvalidAuthException;
 import me.code.filebox.exceptions.InvalidFolderNameException;
-import me.code.filebox.security.JwtTokenProvider;
 import me.code.filebox.services.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +17,10 @@ import java.io.IOException;
 public class FileController {
 
     private final FileService fileService;
-    private final JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    public FileController(FileService fileService, JwtTokenProvider jwtTokenProvider) {
+    public FileController(FileService fileService) {
         this.fileService = fileService;
-        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @PostMapping("/{username}/upload-file")
@@ -33,13 +30,7 @@ public class FileController {
             @RequestParam("folderName") String folderName,
             @PathVariable("username") String username)
             throws InvalidAuthException, InvalidFolderNameException, IOException {
-        boolean isValid = jwtTokenProvider.validate(token);
-
-        if (isValid) {
-            return ResponseEntity.ok(fileService.uploadFile(folderName, username, token, file));
-        } else {
-            throw new InvalidAuthException("Access denied");
-        }
+        return ResponseEntity.ok(fileService.uploadFile(folderName, username, token, file));
     }
 
     @DeleteMapping("/{username}/delete")
@@ -48,13 +39,7 @@ public class FileController {
             @PathVariable("username") String username,
             @RequestParam("fileId") int fileId)
             throws InvalidAuthException, FileDoesNotExistException {
-        boolean isValid = jwtTokenProvider.validate(token);
-
-        if (isValid) {
-            return ResponseEntity.ok(fileService.deleteFile(username, token, fileId));
-        } else {
-            throw new InvalidAuthException("Access denied");
-        }
+        return ResponseEntity.ok(fileService.deleteFile(username, token, fileId));
     }
 
     @GetMapping("/{username}/download")
@@ -63,13 +48,7 @@ public class FileController {
             @PathVariable("username") String username,
             @RequestParam("file") int fileId)
             throws InvalidAuthException, FileDoesNotExistException {
-        boolean isValid = jwtTokenProvider.validate(token);
-
-        if (isValid) {
-            return fileService.downloadFile(username, token, fileId);
-        } else {
-            throw new InvalidAuthException("Access denied");
-        }
+        return fileService.downloadFile(username, token, fileId);
     }
 }
 
