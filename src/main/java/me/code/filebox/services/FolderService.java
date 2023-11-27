@@ -5,39 +5,37 @@ import me.code.filebox.exceptions.InvalidFolderNameException;
 import me.code.filebox.models.Folder;
 import me.code.filebox.models.User;
 import me.code.filebox.repositories.FolderRepository;
-import me.code.filebox.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 @Service
 public class FolderService {
     private final FolderRepository folderRepository;
     private final UserService userService;
-    private final JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    public FolderService(FolderRepository folderRepository, UserService userService, JwtTokenProvider jwtTokenProvider) {
+    @Lazy
+    private FileService fileService;
+
+    @Autowired
+    public FolderService(FolderRepository folderRepository, UserService userService) {
         this.folderRepository = folderRepository;
         this.userService = userService;
-        this.jwtTokenProvider = jwtTokenProvider;
     }
+
 
     public Folder createFolder(String folderName, String username, String token)
             throws InvalidFolderNameException, InvalidAuthException {
-        String tokenUsername = jwtTokenProvider.getUsernameFromToken(token);
+        fileService.validateAuthorization(username, token);
+        User user = userService.findUserByUsername(username);
 
-        if (tokenUsername != null && tokenUsername.equals((username))) {
-            User user = userService.findUserByUsername(username);
-
-            if (folderRepository.existsByFolderNameAndUser(folderName, user)) {
-                throw new InvalidFolderNameException("A folder with the name '" + folderName + "' already exists for the user '" + username + "'");
-            }
-
-            Folder newFolder = new Folder(folderName, user);
-            return folderRepository.save(newFolder);
-        } else {
-            throw new InvalidAuthException("You are not authorized for that request");
+        if (folderRepository.existsByFolderNameAndUser(folderName, user)) {
+            throw new InvalidFolderNameException("A folder with the name '" + folderName + "' already exists for the user '" + username + "'");
         }
+
+        Folder newFolder = new Folder(folderName, user);
+        return folderRepository.save(newFolder);
     }
 
     protected Folder getFolder(String folderName, User user) throws InvalidFolderNameException {

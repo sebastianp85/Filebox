@@ -75,7 +75,7 @@ public class FileService {
         return new ResponseEntity<>(fileContent, headers, HttpStatus.OK);
     }
 
-    private void validateAuthorization(String username, String token) throws InvalidAuthException {
+    protected void validateAuthorization(String username, String token) throws InvalidAuthException {
         String tokenUsername = jwtTokenProvider.getUsernameFromToken(token);
 
         if (tokenUsername == null || !tokenUsername.equals(username)) {
