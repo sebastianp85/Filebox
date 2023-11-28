@@ -59,7 +59,7 @@ public class FolderService {
      * @return The retrieved folder.
      * @throws InvalidFolderNameException If the folder name is invalid or the folder does not exist.
      */
-    protected Folder getFolder(String folderName, User user) throws InvalidFolderNameException {
+    public Folder getFolder(String folderName, User user) throws InvalidFolderNameException {
         return folderRepository.findByFolderNameAndUser(folderName, user)
                 .orElseThrow(() -> new InvalidFolderNameException("Folder not found"));
     }

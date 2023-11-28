@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,6 +38,13 @@ public class Folder {
     // List of files contained in the folder.
     private List<FileEntity> files;
 
+    //For testing to not receive a null value
+    public List<FileEntity> getFiles() {
+        if (files == null) {
+            files = new ArrayList<>();
+        }
+        return files;
+    }
     /**
      * Constructor for Folder.
      *
