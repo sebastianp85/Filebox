@@ -86,7 +86,7 @@ public class FileController {
     public ResponseEntity<byte[]> downloadFile(
             @RequestHeader("Authorization") String token,
             @PathVariable("username") String username,
-            @RequestParam("file") int fileId)
+            @RequestParam("fileId") int fileId)
             throws InvalidAuthException, FileDoesNotExistException {
         return fileService.downloadFile(username, token, fileId);
     }
