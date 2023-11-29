@@ -39,9 +39,9 @@ public class FileController {
      * @param folderName The name of the folder where the file should be uploaded.
      * @param username   The username of the user initiating the upload.
      * @return ResponseEntity containing UploadSuccess DTO.
-     * @throws InvalidAuthException         If the provided token is invalid.
-     * @throws InvalidFolderNameException   If the provided folder name is invalid.
-     * @throws IOException                  If an I/O error occurs during file upload.
+     * @throws InvalidAuthException       If the provided token is invalid.
+     * @throws InvalidFolderNameException If the provided folder name is invalid.
+     * @throws IOException                If an I/O error occurs during file upload.
      */
     @PostMapping("/{username}/upload-file")
     public ResponseEntity<UploadSuccess> uploadFile(
@@ -60,8 +60,8 @@ public class FileController {
      * @param username The username of the user initiating the deletion.
      * @param fileId   The ID of the file to be deleted.
      * @return ResponseEntity containing DeleteSuccess DTO.
-     * @throws InvalidAuthException       If the provided token is invalid.
-     * @throws FileDoesNotExistException  If the specified file does not exist.
+     * @throws InvalidAuthException      If the provided token is invalid.
+     * @throws FileDoesNotExistException If the specified file does not exist.
      */
     @DeleteMapping("/{username}/delete")
     public ResponseEntity<DeleteSuccess> deleteFile(
@@ -79,8 +79,8 @@ public class FileController {
      * @param username The username of the user initiating the download.
      * @param fileId   The ID of the file to be downloaded.
      * @return ResponseEntity containing the byte array of the file.
-     * @throws InvalidAuthException       If the provided token is invalid.
-     * @throws FileDoesNotExistException  If the specified file does not exist.
+     * @throws InvalidAuthException      If the provided token is invalid.
+     * @throws FileDoesNotExistException If the specified file does not exist.
      */
     @GetMapping("/{username}/download")
     public ResponseEntity<byte[]> downloadFile(

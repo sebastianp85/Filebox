@@ -10,7 +10,8 @@ import lombok.Getter;
 @Getter
 public class LoginSuccess extends Success {
 
-    private String token;  // The authentication token associated with a successful login.
+    // The authentication token associated with a successful login.
+    private String token;
 
     /**
      * Constructor for LoginSuccess.

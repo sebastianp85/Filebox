@@ -9,7 +9,8 @@ import lombok.Getter;
 @Getter
 public class Success {
 
-    private String message;  // The message indicating the success of an operation.
+    // The message indicating the success of an operation.
+    private String message;
 
     /**
      * Constructor for Success.

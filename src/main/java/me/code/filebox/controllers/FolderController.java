@@ -36,8 +36,8 @@ public class FolderController {
      * @param folderName The name of the folder to be created.
      * @param username   The username of the user creating the folder.
      * @return ResponseEntity containing the newly created Folder object.
-     * @throws InvalidAuthException         If the provided token is invalid.
-     * @throws InvalidFolderNameException   If the provided folder name is invalid.
+     * @throws InvalidAuthException       If the provided token is invalid.
+     * @throws InvalidFolderNameException If the provided folder name is invalid.
      */
     @PostMapping("/add-folder")
     public ResponseEntity<Folder> createFolder(
