@@ -26,17 +26,17 @@ public class UserControllerTest {
 
     @Test
     public void testRegisterUser() throws RegistrationFailureException {
-        // Skapa ett UserDto-objekt för testet
+        // Create a UserDto object for the test
         UserDto userDto = new UserDto("testuser", "testpassword");
 
-        // Mocka UserService:s beteende
+        // Mock the behavior of UserService
         when(userService.register("testuser", "testpassword"))
                 .thenReturn(new RegistrationSuccess("User successfully registered with username: testuser"));
 
-        // Kör testet
+        // Run the test
         ResponseEntity<RegistrationSuccess> responseEntity = userController.registerUser(userDto);
 
-        // Kontrollera att anropet var framgångsrikt och returnerade rätt meddelande
+        // Verify that the call was successful and returned the correct message
         assertEquals(200, responseEntity.getStatusCodeValue());
         assertEquals("User successfully registered with username: testuser", responseEntity.getBody().getMessage());
     }

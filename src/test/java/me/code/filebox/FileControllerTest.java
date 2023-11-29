@@ -3,9 +3,9 @@ package me.code.filebox;
 import me.code.filebox.controllers.FileController;
 import me.code.filebox.dtos.DeleteSuccess;
 import me.code.filebox.dtos.UploadSuccess;
-import me.code.filebox.exceptions.FileDoesNotExistException;
 import me.code.filebox.exceptions.InvalidAuthException;
 import me.code.filebox.exceptions.InvalidFolderNameException;
+import me.code.filebox.exceptions.FileDoesNotExistException;
 import me.code.filebox.security.JwtTokenProvider;
 import me.code.filebox.services.FileService;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,49 +39,49 @@ public class FileControllerTest {
 
     @BeforeEach
     public void setUp() {
-        // Initialisera MultipartFile för varje test
+        // Initialize MultipartFile for each test
         file = mock(MultipartFile.class);
 
-        // Mocka JwtTokenProvider:s beteende
+        // Mock JwtTokenProvider behavior
         lenient().when(jwtTokenProvider.validate(anyString())).thenReturn(true);
         lenient().when(jwtTokenProvider.getUsernameFromToken(anyString())).thenReturn("testuser");
     }
 
     @Test
     public void uploadFile_Success() throws InvalidAuthException, InvalidFolderNameException, IOException {
-        // Mocka FileService:s beteende
+        // Mock FileService behavior
         when(fileService.uploadFile(anyString(), anyString(), anyString(), eq(file)))
                 .thenReturn(new UploadSuccess("File uploaded successfully"));
 
-        // Kör testet
+        // Run the test
         ResponseEntity<UploadSuccess> responseEntity = fileController.uploadFile("testtoken", file, "testfolder", "testuser");
 
-        // Kontrollera att anropet var framgångsrikt och returnerade rätt meddelande
+        // Check that the call was successful and returned the correct message
         assertAll(
                 () -> assertEquals(200, responseEntity.getStatusCodeValue()),
                 () -> assertEquals("File uploaded successfully", responseEntity.getBody().getMessage())
         );
 
-        // Kontrollera att metoden i FileService har anropats med rätt parametrar
+        // Verify that the method in FileService was called with the correct parameters
         verify(fileService, times(1)).uploadFile("testfolder", "testuser", "testtoken", file);
     }
 
     @Test
     public void deleteFile_Success() throws InvalidAuthException, FileDoesNotExistException {
-        // Mocka FileService:s beteende
+        // Mock FileService behavior
         when(fileService.deleteFile(anyString(), anyString(), anyInt()))
                 .thenReturn(new DeleteSuccess("File deleted successfully"));
 
-        // Kör testet
+        // Run the test
         ResponseEntity<DeleteSuccess> responseEntity = fileController.deleteFile("testtoken", "testuser", 1);
 
-        // Kontrollera att anropet var framgångsrikt och returnerade rätt meddelande
+        // Check that the call was successful and returned the correct message
         assertAll(
                 () -> assertEquals(200, responseEntity.getStatusCodeValue()),
                 () -> assertEquals("File deleted successfully", responseEntity.getBody().getMessage())
         );
 
-        // Kontrollera att metoden i FileService har anropats med rätt parametrar
+        // Verify that the method in FileService was called with the correct parameters
         verify(fileService, times(1)).deleteFile("testuser", "testtoken", 1);
     }
 }

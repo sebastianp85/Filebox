@@ -3,10 +3,7 @@
 ## Getting started
 
 1. Download the project
-2. Configure Environment Variables:
-- Locate the file named .env.example in the resource folder.
-- Rename it to .env or create a new file named .env in the resource folder.
-- Open the .env file and provide the necessary connection details.
+2. Open the application.properties file and replace the placeholder CONNECTION_STRING with your valid database details.
 3. Run FileboxApplication.java
 
 ## Project Overview
