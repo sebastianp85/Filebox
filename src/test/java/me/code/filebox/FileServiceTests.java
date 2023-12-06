@@ -53,8 +53,8 @@ public class FileServiceTests {
         var username = "testUser";
         var folderName = "testFolder";
         var token = "testToken";
+        var fileId = 0;
         var file = new MockMultipartFile("file", "test.txt", MediaType.TEXT_PLAIN_VALUE, "Hello, World!".getBytes());
-        var uploadSuccessMessage = "File uploaded successfully";
 
         Mockito.when(userService.findUserByUsername(username)).thenReturn(new User(username, "password"));
         Mockito.when(jwtTokenProvider.getUsernameFromToken(Mockito.anyString())).thenReturn("testUser");
@@ -70,8 +70,11 @@ public class FileServiceTests {
         var result = Assertions.assertDoesNotThrow(() -> fileService.uploadFile(folderName, username, token, file));
 
         // then
-        Assertions.assertEquals(uploadSuccessMessage, result.getMessage());
+        var expectedMessage = "File uploaded successfully with id " + fileId;
+        Assertions.assertEquals(expectedMessage, result.getMessage());
     }
+
+
 
     @Test
     void deleteFileSuccess() throws InvalidAuthException, FileDoesNotExistException, IOException {
@@ -79,7 +82,7 @@ public class FileServiceTests {
         var username = "testUser";
         var token = "testToken";
         var fileId = 1; // An example file ID
-        var deleteSuccessMessage = "File deleted successfully";
+        var deleteSuccessMessage = "File with id: " + fileId + " successfully deleted";
 
         Mockito.when(jwtTokenProvider.getUsernameFromToken(Mockito.anyString())).thenReturn(username);
         Mockito.when(userService.findUserByUsername(username)).thenReturn(new User(username, "password"));
