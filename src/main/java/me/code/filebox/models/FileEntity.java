@@ -33,6 +33,10 @@ public class FileEntity {
     // The byte data of the file.
     private byte[] data;
 
+    @Column(name = "size")
+    // The size of the file in bytes
+    private long size;
+
     @Transient
     // Transient field for storing the file during file upload.
     private MultipartFile file;
@@ -53,5 +57,6 @@ public class FileEntity {
         this.fileName = file.getOriginalFilename();
         this.folder = folder;
         this.data = file.getBytes();
+        this.size = file.getSize();
     }
 }
