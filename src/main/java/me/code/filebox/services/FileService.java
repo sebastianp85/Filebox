@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -105,10 +106,29 @@ public class FileService {
         FileEntity fileToDownload = getFilById(fileId, username);
 
         byte[] fileContent = fileToDownload.getData();
+        String fileName = fileToDownload.getFileName();
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-        headers.setContentDispositionFormData("inline", fileToDownload.getFileName());
+        String fileExtension = StringUtils.getFilenameExtension(fileName);
+        if (fileExtension != null) {
+            switch (fileExtension.toLowerCase()) {
+                case "jpg":
+                case "jpeg":
+                case "png":
+                case "webp":
+                    headers.setContentType(MediaType.IMAGE_JPEG);
+                    break;
+                case "txt":
+                    headers.setContentType(MediaType.TEXT_PLAIN);
+                    break;
+                default:
+                    headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+            }
+        } else {
+            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        }
+
+        headers.setContentDispositionFormData("inline", fileName);
 
         return new ResponseEntity<>(fileContent, headers, HttpStatus.OK);
     }
