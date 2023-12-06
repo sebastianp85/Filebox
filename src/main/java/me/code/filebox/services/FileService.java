@@ -66,7 +66,9 @@ public class FileService {
         folder.getFiles().add(newFile);
         folderRepository.save(folder);
 
-        return new UploadSuccess("File uploaded successfully");
+        int fileId = newFile.getId();
+
+        return new UploadSuccess("File uploaded successfully with id " + fileId);
     }
 
     /**
@@ -84,7 +86,7 @@ public class FileService {
         validateAuthorization(username, token);
         FileEntity fileToDelete = getFilById(fileId, username);
         fileRepository.delete(fileToDelete);
-        return new DeleteSuccess("File deleted successfully");
+        return new DeleteSuccess("File with id: " + fileId + " successfully deleted");
     }
 
     /**
