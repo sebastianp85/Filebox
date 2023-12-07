@@ -15,6 +15,9 @@ import org.springframework.http.ResponseEntity;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
+/**
+ * Test for the UserController class.
+ */
 @ExtendWith(MockitoExtension.class)
 public class UserControllerTest {
 
@@ -24,6 +27,11 @@ public class UserControllerTest {
     @InjectMocks
     private UserController userController;
 
+    /**
+     * Test for user registration functionality.
+     *
+     * @throws RegistrationFailureException If user registration fails.
+     */
     @Test
     public void testRegisterUser() throws RegistrationFailureException {
         // Create a UserDto object for the test

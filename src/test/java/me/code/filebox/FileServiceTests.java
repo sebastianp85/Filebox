@@ -26,6 +26,9 @@ import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.anyInt;
 
+/**
+ * Test for the business logic in FileService class.
+ */
 @SpringBootTest
 public class FileServiceTests {
 
@@ -47,8 +50,14 @@ public class FileServiceTests {
     @MockBean
     FolderService folderService;
 
+    /**
+     * Test for the successful file upload functionality.
+     *
+     * @throws InvalidFolderNameException If the folder name is invalid.
+     * @throws InvalidAuthException      If authentication is invalid.
+     */
     @Test
-    void uploadFileSuccess() throws InvalidFolderNameException, InvalidAuthException, IOException {
+    void uploadFileSuccess() throws InvalidFolderNameException, InvalidAuthException {
         // given
         var username = "testUser";
         var folderName = "testFolder";
@@ -74,8 +83,13 @@ public class FileServiceTests {
         Assertions.assertEquals(expectedMessage, result.getMessage());
     }
 
-
-
+    /**
+     * Test for the successful file deletion functionality.
+     *
+     * @throws InvalidAuthException       If authentication is invalid.
+     * @throws FileDoesNotExistException If the file does not exist.
+     * @throws IOException               If an I/O exception occurs.
+     */
     @Test
     void deleteFileSuccess() throws InvalidAuthException, FileDoesNotExistException, IOException {
         // given
@@ -95,6 +109,12 @@ public class FileServiceTests {
         Assertions.assertEquals(deleteSuccessMessage, result.getMessage());
     }
 
+    /**
+     * Helper method to create a test FileEntity with sample data.
+     *
+     * @return Test FileEntity.
+     * @throws IOException If an I/O exception occurs.
+     */
     private FileEntity createTestFileEntity() throws IOException {
         var folder = new Folder("testFolder", new User("testUser", "password"));
         var file = new MockMultipartFile("file", "test.txt", MediaType.TEXT_PLAIN_VALUE, "Hello, World!".getBytes());

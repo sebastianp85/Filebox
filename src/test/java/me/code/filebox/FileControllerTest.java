@@ -23,6 +23,9 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
+/**
+ * Test for the FileController class.
+ */
 @ExtendWith(MockitoExtension.class)
 public class FileControllerTest {
 
@@ -47,6 +50,13 @@ public class FileControllerTest {
         lenient().when(jwtTokenProvider.getUsernameFromToken(anyString())).thenReturn("testuser");
     }
 
+    /**
+     * Test for the successful file upload functionality.
+     *
+     * @throws InvalidAuthException        If authentication is invalid.
+     * @throws InvalidFolderNameException  If the folder name is invalid.
+     * @throws IOException                If an I/O exception occurs.
+     */
     @Test
     public void uploadFile_Success() throws InvalidAuthException, InvalidFolderNameException, IOException {
         // Mock FileService behavior
@@ -66,6 +76,12 @@ public class FileControllerTest {
         verify(fileService, times(1)).uploadFile("testfolder", "testuser", "testtoken", file);
     }
 
+    /**
+     * Test for the successful file deletion functionality.
+     *
+     * @throws InvalidAuthException       If authentication is invalid.
+     * @throws FileDoesNotExistException If the file does not exist.
+     */
     @Test
     public void deleteFile_Success() throws InvalidAuthException, FileDoesNotExistException {
         // Mock FileService behavior

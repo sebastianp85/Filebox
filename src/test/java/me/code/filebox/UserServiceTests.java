@@ -16,6 +16,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.Optional;
 
+/**
+ * Test for the business logic in UserService class.
+ */
 @SpringBootTest
 public class UserServiceTests {
 
@@ -28,6 +31,9 @@ public class UserServiceTests {
     @MockBean
     JwtTokenProvider jwtTokenProvider;
 
+    /**
+     * Test for the successful user registration functionality.
+     */
     @Test
     void registerUserSuccess() {
         // given
@@ -48,6 +54,9 @@ public class UserServiceTests {
         Assertions.assertEquals(registrationSuccessMessage, result.getMessage());
     }
 
+    /**
+     * Test for user registration failure when attempting to register an existing user.
+     */
     @Test
     void registerUserFailure() {
         // given
@@ -63,4 +72,3 @@ public class UserServiceTests {
         Assertions.assertThrows(RegistrationFailureException.class, () -> userService.register(userDto.username(), userDto.password()));
     }
 }
-
